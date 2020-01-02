@@ -3,10 +3,7 @@ package gui;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -25,8 +22,9 @@ public class SudokuGUI extends Application {
         root.setBackground(new Background(new BackgroundFill(Color.DARKGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
         controller = new Controller(this);
         root.setCenter(controller.getBoard());
+        root.setBottom(controller.getBottom());
         BorderPane.setMargin(root.getCenter(), new Insets(2, 0, 0, 2));
-        Scene scene = new Scene(root, 400, 400);
+        Scene scene = new Scene(root, 400, 450);
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();

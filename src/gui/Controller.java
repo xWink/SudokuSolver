@@ -1,10 +1,14 @@
 package gui;
 
+import game.Solver;
 import game.SudokuGame;
 import game.SudokuTile;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -16,12 +20,30 @@ public class Controller {
 
     private SudokuGUI gui;
     private SudokuGame game;
+    private Solver solver;
     private ArrayList<TileNode> nodes;
 
     public Controller(SudokuGUI theGui) {
         gui = theGui;
         game = new SudokuGame();
+        solver = new Solver(game);
         setBoard();
+    }
+
+    HBox getBottom() {
+        ObservableList<Button> buttons = FXCollections.observableArrayList();
+
+        Button newGame = new Button("New Game");
+        newGame.setOnAction(actionEvent -> game.reset());
+
+        Button depthFirst = new Button("Depth First");
+        depthFirst.setOnAction(actionEvent -> solver.depthFirstSolve());
+
+        buttons.addAll(newGame, depthFirst);
+
+        HBox bottom = new HBox();
+        bottom.getChildren().addAll(buttons);
+        return bottom;
     }
 
     /**
