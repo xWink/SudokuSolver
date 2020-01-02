@@ -21,13 +21,17 @@ public class SudokuGUI extends Application {
         root = new BorderPane();
         root.setBackground(new Background(new BackgroundFill(Color.DARKGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
         controller = new Controller(this);
-        root.setCenter(controller.getBoard());
+        setBoard();
         root.setBottom(controller.getBottom());
-        BorderPane.setMargin(root.getCenter(), new Insets(2, 0, 0, 2));
         Scene scene = new Scene(root, 400, 450);
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
+    }
+
+    void setBoard() {
+        root.setCenter(controller.getBoard());
+        BorderPane.setMargin(root.getCenter(), new Insets(2, 0, 0, 2));
     }
 
     public BorderPane getRoot() {

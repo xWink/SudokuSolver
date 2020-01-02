@@ -30,11 +30,18 @@ public class Controller {
         setBoard();
     }
 
+    void reset() {
+        game.reset();
+        setBoard();
+        ((TilePane) gui.getRoot().getCenter()).getChildren().clear();
+        gui.setBoard();
+    }
+
     HBox getBottom() {
         ObservableList<Button> buttons = FXCollections.observableArrayList();
 
         Button newGame = new Button("New Game");
-        newGame.setOnAction(actionEvent -> game.reset());
+        newGame.setOnAction(actionEvent -> reset());
 
         Button depthFirst = new Button("Depth First");
         depthFirst.setOnAction(actionEvent -> solver.depthFirstSolve());
