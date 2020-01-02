@@ -6,11 +6,16 @@ public class SudokuGame {
     private SudokuPuzzles puzzle;
 
     public SudokuGame() {
-        reset();
+        newGame();
+    }
+
+    public void newGame() {
+        puzzle = SudokuPuzzles.values()[(int) (Math.random() * SudokuPuzzles.values().length)];
+        board = new SudokuBoard();
+        setNewValues();
     }
 
     public void reset() {
-        puzzle = SudokuPuzzles.values()[(int) (Math.random() * SudokuPuzzles.values().length)];
         board = new SudokuBoard();
         setNewValues();
     }

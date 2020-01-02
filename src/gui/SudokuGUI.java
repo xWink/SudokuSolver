@@ -23,6 +23,7 @@ public class SudokuGUI extends Application {
         controller = new Controller(this);
         setBoard();
         root.setBottom(controller.getBottom());
+        BorderPane.setMargin(root.getBottom(), new Insets(3));
         Scene scene = new Scene(root, 400, 450);
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);

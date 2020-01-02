@@ -4,8 +4,6 @@ import game.Solver;
 import game.SudokuGame;
 import game.SudokuTile;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -23,11 +21,27 @@ public class Controller {
     private Solver solver;
     private ArrayList<TileNode> nodes;
 
+    /**
+     * Initializes a new game of sudoku, its board tiles,
+     * and a corresponding solver for the game.
+     * @param theGui the gui for the sudoku game
+     */
     public Controller(SudokuGUI theGui) {
         gui = theGui;
         game = new SudokuGame();
         solver = new Solver(game);
         setBoard();
+    }
+
+    /**
+     * Starts a new game, clearing the board and replacing it with a
+     * random new one.
+     */
+    void newGame() {
+        game.newGame();
+        setBoard();
+        ((TilePane) gui.getRoot().getCenter()).getChildren().clear();
+        gui.setBoard();
     }
 
     void reset() {
@@ -37,19 +51,30 @@ public class Controller {
         gui.setBoard();
     }
 
+    /**
+     * Creates an HBox which acts as the bottom of the BorderPane root
+     * in the gui. The HBox contains buttons to create a new game, reset
+     * the current game, and to solve the sudoku board.
+     * @return an HBox containing buttons for the sudoku gui
+     */
     HBox getBottom() {
-        ObservableList<Button> buttons = FXCollections.observableArrayList();
-
         Button newGame = new Button("New Game");
-        newGame.setOnAction(actionEvent -> reset());
+        newGame.styleProperty().setValue("-fx-background-insets: 0 0 0 0, 0, 1, 2;");
+        newGame.setOnAction(actionEvent -> newGame());
+
+        Button reset = new Button("Reset");
+        reset.styleProperty().setValue("-fx-background-insets: 0 0 0 0, 0, 1, 2;");
+        reset.setOnAction(actionEvent -> reset());
 
         Button depthFirst = new Button("Depth First");
+        depthFirst.styleProperty().setValue("-fx-background-insets: 0 0 0 0, 0, 1, 2;");
         depthFirst.setOnAction(actionEvent -> solver.depthFirstSolve());
 
-        buttons.addAll(newGame, depthFirst);
+        HBox spacer = new HBox();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
 
         HBox bottom = new HBox();
-        bottom.getChildren().addAll(buttons);
+        bottom.getChildren().addAll(newGame, reset, spacer, depthFirst);
         return bottom;
     }
 
