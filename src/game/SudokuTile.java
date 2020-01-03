@@ -7,7 +7,9 @@ public class SudokuTile {
     SudokuTile[] col;
     SudokuTile[] area;
 
-    public SudokuTile(SudokuTile[] theRow, SudokuTile[] theCol, SudokuTile[] theArea) {
+    public SudokuTile() { }
+
+    public void setValues(SudokuTile[] theRow, SudokuTile[] theCol, SudokuTile[] theArea) {
         value = 0;
         row = theRow;
         col = theCol;

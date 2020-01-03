@@ -7,21 +7,26 @@ public class SudokuBoard {
 
     public SudokuBoard() {
         board = new SudokuTile[9][9];
+
         for (int i = 0; i < board.length; i++)
             for (int j = 0; j < board[i].length; j++)
-                board[i][j] = new SudokuTile(board[i], getColumn(j), getArea(i, j));
+                board[i][j] = new SudokuTile();
+
+        for (int i = 0; i < board.length; i++)
+            for (int j = 0; j < board[i].length; j++)
+                board[i][j].setValues(board[i], getColumn(j), getArea(i, j));
     }
 
     private SudokuTile[] getColumn(int index) {
-        SudokuTile[] column = new SudokuTile[board[0].length];
-        for(int i = 0; i < column.length; i++){
+        SudokuTile[] column = new SudokuTile[board[index].length];
+        for (int i = 0; i < column.length; i++){
             column[i] = board[i][index];
         }
         return column;
     }
 
     private SudokuTile[] getArea(int row, int col) {
-        int areaR, areaC;
+        int areaR, areaC, num = 0;
         SudokuTile[] area = new SudokuTile[9];
 
         if (row < 3) areaR = 1;
@@ -34,7 +39,7 @@ public class SudokuBoard {
 
         for (int i = areaR - 1; i <= areaR + 1; i++) {
             for (int j = areaC - 1; j <= areaC + 1; j++) {
-                area[area.length - 1] = board[i][j];
+                area[num++] = board[i][j];
             }
         }
 

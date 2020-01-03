@@ -20,4 +20,9 @@ public class TileNode {
     public TextField getText() {
         return text;
     }
+
+    public void setValue(int value) {
+        tile.setValue(value);
+        text.setText(((Integer) value).toString());
+    }
 }

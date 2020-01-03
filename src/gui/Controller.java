@@ -1,6 +1,5 @@
 package gui;
 
-import game.Solver;
 import game.SudokuGame;
 import game.SudokuTile;
 import javafx.application.Platform;
@@ -29,7 +28,7 @@ public class Controller {
     public Controller(SudokuGUI theGui) {
         gui = theGui;
         game = new SudokuGame();
-        solver = new Solver(game);
+        solver = new Solver(this, game);
         setBoard();
     }
 
@@ -51,6 +50,10 @@ public class Controller {
         gui.setBoard();
     }
 
+    SudokuGUI getGui() {
+        return gui;
+    }
+
     /**
      * Creates an HBox which acts as the bottom of the BorderPane root
      * in the gui. The HBox contains buttons to create a new game, reset
@@ -68,7 +71,10 @@ public class Controller {
 
         Button depthFirst = new Button("Depth First");
         depthFirst.styleProperty().setValue("-fx-background-insets: 0 0 0 0, 0, 1, 2;");
-        depthFirst.setOnAction(actionEvent -> solver.depthFirstSolve());
+        depthFirst.setOnAction(actionEvent -> {
+            solver.depthFirstSolve();
+            gui.setBoard();
+        });
 
         HBox spacer = new HBox();
         HBox.setHgrow(spacer, Priority.ALWAYS);
@@ -114,6 +120,10 @@ public class Controller {
                 node.getText().setStyle("-fx-font-weight: bold; -fx-font-size: 16;");
             }
         }
+    }
+
+    ArrayList<TileNode> getNodes() {
+        return nodes;
     }
 
     private void initBorder() {
