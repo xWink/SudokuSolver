@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 
 public class Controller {
@@ -36,7 +37,6 @@ public class Controller {
     void newGame() {
         game.newGame();
         initBoard();
-        ((TilePane) gui.getRoot().getCenter()).getChildren().clear();
         gui.setBoard();
     }
 
@@ -46,7 +46,6 @@ public class Controller {
     void reset() {
         game.reset();
         initBoard();
-        ((TilePane) gui.getRoot().getCenter()).getChildren().clear();
         gui.setBoard();
     }
 
@@ -118,36 +117,35 @@ public class Controller {
     }
 
     /**
-     * Initializes borders for cells that are at the edges of a 3x3 box in the sudoku board.
+     * Initializes borders for cells that are at the edges of a 3x3 box in the sudoku board with borders
+     * matching the background of the board.
      * @param row the row of the cell whose borders are initialized
      * @param col the column of the cell whose borders are initialized
      */
     private void initBorder(int row, int col) {
+        Paint color = gui.getRoot().getBackground().getFills().get(0).getFill();
         if (row > 0 && col > 0 && row % 3 == 0 && col % 3 == 0) {
-            setBorderWidths(nodes[row][col], new BorderWidths(2, 0, 0, 2));
-            setBorderWidths(nodes[row][col - 1], new BorderWidths(2, 2, 0, 0));
-            setBorderWidths(nodes[row - 1][col], new BorderWidths(0, 0, 2, 2));
-            setBorderWidths(nodes[row - 1][col - 1], new BorderWidths(0, 2, 2, 0));
+            setBorderWidths(nodes[row][col], color, new BorderWidths(2, 0, 0, 2));
+            setBorderWidths(nodes[row][col - 1], color, new BorderWidths(2, 2, 0, 0));
+            setBorderWidths(nodes[row - 1][col], color, new BorderWidths(0, 0, 2, 2));
+            setBorderWidths(nodes[row - 1][col - 1], color, new BorderWidths(0, 2, 2, 0));
         } else if (col % 3 == 0 && col % 9 != 0) {
-            setBorderWidths(nodes[row][col], new BorderWidths(0, 0, 0, 2));
-            setBorderWidths(nodes[row][col - 1], new BorderWidths(0, 2, 0, 0));
+            setBorderWidths(nodes[row][col], color, new BorderWidths(0, 0, 0, 2));
+            setBorderWidths(nodes[row][col - 1], color, new BorderWidths(0, 2, 0, 0));
         } else if (row > 0 && row % 3 == 0) {
-            setBorderWidths(nodes[row - 1][col], new BorderWidths(0, 0, 2, 0));
-            setBorderWidths(nodes[row][col], new BorderWidths(2, 0, 0, 0));
+            setBorderWidths(nodes[row - 1][col], color, new BorderWidths(0, 0, 2, 0));
+            setBorderWidths(nodes[row][col], color, new BorderWidths(2, 0, 0, 0));
         }
     }
 
     /**
-     * Sets the borders of a given TileNode to the solid colour of the sudoku board's background
-     * and given BorderWidth properties.
+     * Sets the borders of a given TileNode to a given color and given BorderWidth properties.
      * @param node the TileNode whose TextField property will have its borders set
      * @param widths the BorderWidths applied to the TextField in the given TileNode
      * @see TileNode
      */
-    private void setBorderWidths(TileNode node, BorderWidths widths) {
-        node.getText().setBorder(new Border(new BorderStroke(
-                gui.getRoot().getBackground().getFills().get(0).getFill(),
-                BorderStrokeStyle.SOLID, null, widths)));
+    private void setBorderWidths(TileNode node, Paint color, BorderWidths widths) {
+        node.getText().setBorder(new Border(new BorderStroke(color, BorderStrokeStyle.SOLID,null, widths)));
     }
 
     /**
