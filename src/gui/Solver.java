@@ -1,17 +1,12 @@
 package gui;
 
-import game.SudokuGame;
-import game.SudokuTile;
-
 
 public class Solver {
 
     private Controller controller;
-    private SudokuGame game;
 
-    public Solver(Controller theController, SudokuGame sudokuGame) {
+    public Solver(Controller theController) {
         controller = theController;
-        game = sudokuGame;
     }
 
     public boolean depthFirstSolve() {

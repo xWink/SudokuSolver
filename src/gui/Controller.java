@@ -10,8 +10,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
-import java.util.ArrayList;
-
 
 public class Controller {
 
@@ -28,8 +26,12 @@ public class Controller {
     public Controller(SudokuGUI theGui) {
         gui = theGui;
         game = new SudokuGame();
-        solver = new Solver(this, game);
-        setBoard();
+        solver = new Solver(this);
+        initBoard();
+    }
+
+    SudokuGame getGame() {
+        return game;
     }
 
     /**
@@ -38,14 +40,14 @@ public class Controller {
      */
     void newGame() {
         game.newGame();
-        setBoard();
+        initBoard();
         ((TilePane) gui.getRoot().getCenter()).getChildren().clear();
         gui.setBoard();
     }
 
     void reset() {
         game.reset();
-        setBoard();
+        initBoard();
         ((TilePane) gui.getRoot().getCenter()).getChildren().clear();
         gui.setBoard();
     }
@@ -72,7 +74,9 @@ public class Controller {
         Button depthFirst = new Button("Depth First");
         depthFirst.styleProperty().setValue("-fx-background-insets: 0 0 0 0, 0, 1, 2;");
         depthFirst.setOnAction(actionEvent -> {
+            reset();
             solver.depthFirstSolve();
+            initBoard();
             gui.setBoard();
         });
 
@@ -104,7 +108,7 @@ public class Controller {
     /**
      * Creates the initial sudoku board.
      */
-    void setBoard() {
+    void initBoard() {
         // Initialize list of all nodes of the board tiles
         nodes = new TileNode[9][9];
         for (int i = 0; i < 9; i++) {

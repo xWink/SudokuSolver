@@ -10,14 +10,12 @@ import javafx.stage.Stage;
 
 public class SudokuGUI extends Application {
 
-    private Stage primaryStage;
     private Controller controller;
     private BorderPane root;
 
     @Override
     public void start(Stage stage) throws Exception {
-        primaryStage = stage;
-        primaryStage.setTitle("Sudoku!");
+        stage.setTitle("Sudoku!");
         root = new BorderPane();
         root.setBackground(new Background(new BackgroundFill(Color.DARKGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
         controller = new Controller(this);
@@ -25,9 +23,9 @@ public class SudokuGUI extends Application {
         root.setBottom(controller.getBottom());
         BorderPane.setMargin(root.getBottom(), new Insets(3));
         Scene scene = new Scene(root, 400, 450);
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
-        primaryStage.show();
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
     }
 
     void setBoard() {
