@@ -4,9 +4,9 @@ This is a simple JavaFX application that allows the user to play a game of Sudok
 
 ### Functionality
 
-The application provides the user with a series of buttons that automatically solve the puzzle by using different algorithms.
-These buttons demonstrate the speed and logic flow of the different algorithms in the context of solving Sudoku puzzles,
-while also providing the user with a clean Sudoku puzzle board to play with.
+- Play sudoku with numerous different boards
+
+- Automatically solve the board with different algorithms
 
 ### Examples
 
