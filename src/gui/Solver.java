@@ -5,10 +5,20 @@ public class Solver {
 
     private Controller controller;
 
+    /**
+     * Initializes the solver with a controller for a given GUI.
+     * @param theController the controller for the GUI
+     * @see Controller
+     */
     public Solver(Controller theController) {
         controller = theController;
     }
 
+    /**
+     * Solves the sudoku board using recursive depth first search principles.
+     * @return true if the last updated cell on the board has
+     * no conflicts
+     */
     public boolean depthFirstSolve() {
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {

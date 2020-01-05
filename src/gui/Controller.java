@@ -5,7 +5,6 @@ import game.SudokuTile;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -19,9 +18,9 @@ public class Controller {
     private TileNode[][] nodes;
 
     /**
-     * Initializes a new game of sudoku, its board tiles,
-     * and a corresponding solver for the game.
+     * Initializes a new game of sudoku, its board tiles, and a corresponding solver for the game.
      * @param theGui the gui for the sudoku game
+     * @see SudokuGUI
      */
     public Controller(SudokuGUI theGui) {
         gui = theGui;
@@ -45,6 +44,9 @@ public class Controller {
         gui.setBoard();
     }
 
+    /**
+     * Empties all editable cells on the sudoku board.
+     */
     void reset() {
         game.reset();
         initBoard();
@@ -52,40 +54,13 @@ public class Controller {
         gui.setBoard();
     }
 
-    SudokuGUI getGui() {
-        return gui;
-    }
-
     /**
-     * Creates an HBox which acts as the bottom of the BorderPane root
-     * in the gui. The HBox contains buttons to create a new game, reset
-     * the current game, and to solve the sudoku board.
-     * @return an HBox containing buttons for the sudoku gui
+     * Returns the solver that contains the algorithms which can be used to solve the current sudoku puzzle.
+     * @return the solver for the active puzzle
+     * @see Solver
      */
-    HBox getBottom() {
-        Button newGame = new Button("New Game");
-        newGame.styleProperty().setValue("-fx-background-insets: 0 0 0 0, 0, 1, 2;");
-        newGame.setOnAction(actionEvent -> newGame());
-
-        Button reset = new Button("Reset");
-        reset.styleProperty().setValue("-fx-background-insets: 0 0 0 0, 0, 1, 2;");
-        reset.setOnAction(actionEvent -> reset());
-
-        Button depthFirst = new Button("Depth First");
-        depthFirst.styleProperty().setValue("-fx-background-insets: 0 0 0 0, 0, 1, 2;");
-        depthFirst.setOnAction(actionEvent -> {
-            reset();
-            solver.depthFirstSolve();
-            initBoard();
-            gui.setBoard();
-        });
-
-        HBox spacer = new HBox();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        HBox bottom = new HBox();
-        bottom.getChildren().addAll(newGame, reset, spacer, depthFirst);
-        return bottom;
+    Solver getSolver() {
+        return solver;
     }
 
     /**
@@ -132,6 +107,12 @@ public class Controller {
         }
     }
 
+    /**
+     * Getter for the 2D array of TileNodes that contains the int values, editable state, and TextField for every
+     * cell in the sudoku board.
+     * @return the TileNodes that represent the entire sudoku board back-end and front-end
+     * @see TileNode
+     */
     TileNode[][] getNodes() {
         return nodes;
     }
@@ -161,6 +142,7 @@ public class Controller {
      * Creates a new TextField for a given tile on the board.
      * @param tile the tile that will get a new textfield
      * @return the new textfield
+     * @see SudokuTile
      */
     private TextField getNewTextField(SudokuTile tile) {
         TextField textField = new TextField(tile.getValue() == 0 ? "" : ((Integer) tile.getValue()).toString());
@@ -174,11 +156,11 @@ public class Controller {
     }
 
     /**
-     * Adds an event listener to a textfield.
-     * The listener verifies changes to the textfield
+     * Adds an event listener to a textfield. The listener verifies changes to the textfield
      * and reverses them if they are not valid.
      * @param textField the textfield which will get a new event listener
      * @param tile the tile in the same node as the textfield
+     * @see SudokuTile
      */
     private void addTextEditListener(TextField textField, SudokuTile tile) {
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
