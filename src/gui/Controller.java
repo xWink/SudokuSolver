@@ -29,10 +29,6 @@ public class Controller {
         initBoard();
     }
 
-    SudokuGame getGame() {
-        return game;
-    }
-
     /**
      * Starts a new game, clearing the board and replacing it with a
      * random new one.
@@ -64,9 +60,10 @@ public class Controller {
     }
 
     /**
-     * Get the whole sudoku board.
+     * Get the whole sudoku board as a 9x9 TilePane based on TileNodes.
      * @return the TilePane containing all TileNode TextFields,
      * backgrounds, etc.
+     * @see TileNode
      */
     TilePane getBoard() {
         TilePane board = new TilePane();
@@ -81,7 +78,10 @@ public class Controller {
     }
 
     /**
-     * Creates the initial sudoku board.
+     * Creates the initial sudoku board for the GUI based on the board in the SudokuGame object.
+     * @see SudokuGame
+     * @see SudokuTile
+     * @see TileNode
      */
     void initBoard() {
         // Initialize list of all nodes of the board tiles
@@ -117,6 +117,11 @@ public class Controller {
         return nodes;
     }
 
+    /**
+     * Initializes borders for cells that are at the edges of a 3x3 box in the sudoku board.
+     * @param row the row of the cell whose borders are initialized
+     * @param col the column of the cell whose borders are initialized
+     */
     private void initBorder(int row, int col) {
         if (row > 0 && col > 0 && row % 3 == 0 && col % 3 == 0) {
             setBorderWidths(nodes[row][col], new BorderWidths(2, 0, 0, 2));
@@ -132,6 +137,13 @@ public class Controller {
         }
     }
 
+    /**
+     * Sets the borders of a given TileNode to the solid colour of the sudoku board's background
+     * and given BorderWidth properties.
+     * @param node the TileNode whose TextField property will have its borders set
+     * @param widths the BorderWidths applied to the TextField in the given TileNode
+     * @see TileNode
+     */
     private void setBorderWidths(TileNode node, BorderWidths widths) {
         node.getText().setBorder(new Border(new BorderStroke(
                 gui.getRoot().getBackground().getFills().get(0).getFill(),
