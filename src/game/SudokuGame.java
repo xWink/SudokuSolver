@@ -12,16 +12,16 @@ public class SudokuGame {
     public void newGame() {
         puzzle = SudokuPuzzles.values()[(int) (Math.random() * SudokuPuzzles.values().length)];
         board = new SudokuBoard();
-        setNewValues();
+        setStartingValues();
     }
 
     public void reset() {
         board = new SudokuBoard();
-        setNewValues();
+        setStartingValues();
     }
 
-    private void setNewValues() {
-        board.setAllValues(puzzle.getPuzzle());
+    private void setStartingValues() {
+        board.setStartingValues(puzzle.getPuzzle());
     }
 
     public void setValue(int row, int column, int value) {

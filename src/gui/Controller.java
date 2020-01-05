@@ -122,7 +122,7 @@ public class Controller {
         // Make preset tiles uneditable
         for (TileNode[] row : nodes) {
             for (TileNode node : row) {
-                if (node.getTile().getValue() != 0) {
+                if (!node.getTile().isEditable()) {
                     node.getText().setEditable(false);
                     node.getText().setMouseTransparent(true);
                     node.getText().setFocusTraversable(false);
