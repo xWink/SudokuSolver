@@ -21,6 +21,10 @@ public class TileNode {
         return text;
     }
 
+    public int getValue() {
+        return tile.getValue();
+    }
+
     public void setValue(int value) {
         tile.setValue(value);
         text.setText(((Integer) value).toString());

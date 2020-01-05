@@ -15,15 +15,19 @@ public class Solver {
     }
 
     public boolean depthFirstSolve() {
-        SudokuTile[][] board = game.getBoard().getBoard();
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
-                if (board[row][col].getValue() == 0) {
-                    for (int k = 1; k <= 9; k++) {
-                        controller.getNodes().get(row * 9 + col).setValue(k);
-                        if (isValid(board[row][col]) && depthFirstSolve())
-                            return true;
-                        controller.getNodes().get(row * 9 + col).setValue(controller.getNodes().get(row * 9 + col).getTile().getValue() + 1);
+                TileNode node = controller.getNodes()[row][col];
+                if (node.getValue() == 0) {
+                    for (int num = 1; num <= 9; num++) {
+                        if (isValid(num, row, col)) {
+                            node.setValue(num);
+                            if (depthFirstSolve()) {
+                                return true;
+                            } else {
+                                node.setValue(0);
+                            }
+                        }
                     }
                     return false;
                 }
@@ -32,38 +36,40 @@ public class Solver {
         return true;
     }
 
-    private boolean isValid(SudokuTile tile) {
-        return isRowValid(tile) && isColValid(tile) && isAreaValid(tile);
+    private boolean isValid(int num, int row, int col) {
+        return isRowValid(num, row) && isColValid(num, col) && isAreaValid(num, row, col);
     }
 
-    private boolean isRowValid(SudokuTile tile) {
-        for (SudokuTile otherTile : tile.getRow()) {
-            if (tile.getValue() == otherTile.getValue()
-                    && tile.getValue() != 0
-                    && !tile.equals(otherTile)) {
+    private boolean isRowValid(int num, int row) {
+        TileNode[][] board = controller.getNodes();
+        for (TileNode tile : board[row]) {
+            if (tile.getValue() == num && tile.getValue() != 0) {
                 return false;
             }
         }
         return true;
     }
 
-    private boolean isColValid(SudokuTile tile) {
-        for (SudokuTile otherTile : tile.getCol()) {
-            if (tile.getValue() == otherTile.getValue()
-                    && tile.getValue() != 0
-                    && !tile.equals(otherTile)) {
+    private boolean isColValid(int num, int col) {
+        TileNode[][] board = controller.getNodes();
+        for (int i = 0; i < 9; i++) {
+            if (board[i][col].getValue() == num && board[i][col].getValue() != 0) {
                 return false;
             }
         }
         return true;
     }
 
-    private boolean isAreaValid(SudokuTile tile) {
-        for (SudokuTile otherTile : tile.getArea()) {
-            if (tile.getValue() == otherTile.getValue()
-                    && tile.getValue() != 0
-                    && !tile.equals(otherTile)) {
-                return false;
+    private boolean isAreaValid(int num, int row, int col) {
+        TileNode[][] board = controller.getNodes();
+        int r = row - row % 3;
+        int c = col - col % 3;
+
+        for (int i = r; i < r + 3; i++) {
+            for (int j = c; j < c + 3; j++) {
+                if (board[i][j].getValue() == num && board[i][j].getValue() != 0) {
+                    return false;
+                }
             }
         }
         return true;

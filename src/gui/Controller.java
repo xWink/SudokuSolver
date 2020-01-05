@@ -18,7 +18,7 @@ public class Controller {
     private SudokuGUI gui;
     private SudokuGame game;
     private Solver solver;
-    private ArrayList<TileNode> nodes;
+    private TileNode[][] nodes;
 
     /**
      * Initializes a new game of sudoku, its board tiles,
@@ -93,8 +93,11 @@ public class Controller {
         TilePane board = new TilePane();
         board.setPrefColumns(9);
         board.setPrefRows(9);
-        for (TileNode node : nodes)
-            board.getChildren().add(node.getText());
+        for (TileNode[] row : nodes) {
+            for (TileNode node : row) {
+                board.getChildren().add(node.getText());
+            }
+        }
         return board;
     }
 
@@ -103,49 +106,49 @@ public class Controller {
      */
     void setBoard() {
         // Initialize list of all nodes of the board tiles
-        nodes = new ArrayList<>();
-        for (SudokuTile[] row : game.getBoard().getBoard()) {
-            for (SudokuTile tile : row) {
-                nodes.add(new TileNode(tile, getNewTextField(tile)));
-                initBorder();
+        nodes = new TileNode[9][9];
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                SudokuTile tile = game.getBoard().getBoard()[i][j];
+                nodes[i][j] = new TileNode(tile, getNewTextField(tile));
+                initBorder(i, j);
             }
         }
 
         // Make preset tiles uneditable
-        for (TileNode node : nodes) {
-            if (node.getTile().getValue() != 0) {
-                node.getText().setEditable(false);
-                node.getText().setMouseTransparent(true);
-                node.getText().setFocusTraversable(false);
-                node.getText().setStyle("-fx-font-weight: bold; -fx-font-size: 16;");
+        for (TileNode[] row : nodes) {
+            for (TileNode node : row) {
+                if (node.getTile().getValue() != 0) {
+                    node.getText().setEditable(false);
+                    node.getText().setMouseTransparent(true);
+                    node.getText().setFocusTraversable(false);
+                    node.getText().setStyle("-fx-font-weight: bold; -fx-font-size: 16;");
+                }
             }
         }
     }
 
-    ArrayList<TileNode> getNodes() {
+    TileNode[][] getNodes() {
         return nodes;
     }
 
-    private void initBorder() {
-        if ((nodes.size() - 1) % 3 == 0 && (nodes.size() - 1) % 9 != 0) {
-            setBorderWidths(nodes.size() - 1, new BorderWidths(0, 0, 0, 2));
-            setBorderWidths(nodes.size() - 2, new BorderWidths(0, 2, 0, 0));
-        } else if ((nodes.size() > 18 && nodes.size() < 28) || (nodes.size() > 45 && nodes.size() < 55))
-            setBorderWidths(nodes.size() - 1, new BorderWidths(0, 0, 2, 0));
-        else if ((nodes.size() > 27 && nodes.size() < 37) || (nodes.size() > 54 && nodes.size() < 64))
-            setBorderWidths(nodes.size() - 1, new BorderWidths(2, 0, 0, 0));
-
-        if (nodes.size() == 22 || nodes.size() == 25 || nodes.size() == 49 || nodes.size() == 52) {
-            setBorderWidths(nodes.size() - 1, new BorderWidths(0, 0, 2, 2));
-            setBorderWidths(nodes.size() - 2, new BorderWidths(0, 2, 2, 0));
-        } else if (nodes.size() == 31 || nodes.size() == 34 || nodes.size() == 61 || nodes.size() == 58) {
-            setBorderWidths(nodes.size() - 1, new BorderWidths(2, 0, 0, 2));
-            setBorderWidths(nodes.size() - 2, new BorderWidths(2, 2, 0, 0));
+    private void initBorder(int row, int col) {
+        if ((row == 3 && col == 3) || (row == 3 && col == 6) || (row == 6 && col == 3) || (row == 6 && col == 6)) {
+            setBorderWidths(nodes[row][col], new BorderWidths(2, 0, 0, 2));
+            setBorderWidths(nodes[row][col - 1], new BorderWidths(2, 2, 0, 0));
+            setBorderWidths(nodes[row - 1][col], new BorderWidths(0, 0, 2, 2));
+            setBorderWidths(nodes[row - 1][col - 1], new BorderWidths(0, 2, 2, 0));
+        } else if (col % 3 == 0 && col % 9 != 0) {
+            setBorderWidths(nodes[row][col], new BorderWidths(0, 0, 0, 2));
+            setBorderWidths(nodes[row][col - 1], new BorderWidths(0, 2, 0, 0));
+        } else if (row == 3 || row == 6) {
+            setBorderWidths(nodes[row - 1][col], new BorderWidths(0, 0, 2, 0));
+            setBorderWidths(nodes[row][col], new BorderWidths(2, 0, 0, 0));
         }
     }
 
-    private void setBorderWidths(int nodeNum, BorderWidths widths) {
-        nodes.get(nodeNum).getText().setBorder(new Border(new BorderStroke(
+    private void setBorderWidths(TileNode node, BorderWidths widths) {
+        node.getText().setBorder(new Border(new BorderStroke(
                 gui.getRoot().getBackground().getFills().get(0).getFill(),
                 BorderStrokeStyle.SOLID, null, widths)));
     }
