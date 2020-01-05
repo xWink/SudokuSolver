@@ -118,7 +118,7 @@ public class Controller {
     }
 
     private void initBorder(int row, int col) {
-        if ((row == 3 && col == 3) || (row == 3 && col == 6) || (row == 6 && col == 3) || (row == 6 && col == 6)) {
+        if (row > 0 && col > 0 && row % 3 == 0 && col % 3 == 0) {
             setBorderWidths(nodes[row][col], new BorderWidths(2, 0, 0, 2));
             setBorderWidths(nodes[row][col - 1], new BorderWidths(2, 2, 0, 0));
             setBorderWidths(nodes[row - 1][col], new BorderWidths(0, 0, 2, 2));
@@ -126,7 +126,7 @@ public class Controller {
         } else if (col % 3 == 0 && col % 9 != 0) {
             setBorderWidths(nodes[row][col], new BorderWidths(0, 0, 0, 2));
             setBorderWidths(nodes[row][col - 1], new BorderWidths(0, 2, 0, 0));
-        } else if (row == 3 || row == 6) {
+        } else if (row > 0 && row % 3 == 0) {
             setBorderWidths(nodes[row - 1][col], new BorderWidths(0, 0, 2, 0));
             setBorderWidths(nodes[row][col], new BorderWidths(2, 0, 0, 0));
         }
