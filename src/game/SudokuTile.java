@@ -6,6 +6,7 @@ public class SudokuTile {
     boolean editable;
 
     public SudokuTile() {
+        value = 0;
         editable = true;
     }
 
