@@ -6,7 +6,7 @@ This is a simple JavaFX application that allows the user to play a game of Sudok
 
 - Play sudoku with numerous different boards
 
-- Automatically solve the board with different algorithms
+- Automatically solve the board with a recursive depth first search algorithm
 
 ### Examples
 
